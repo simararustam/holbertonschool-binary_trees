@@ -1,59 +1,56 @@
 #include "binary_trees.h"
+
 /**
- *binary_tree_is_perfect - checks if a binary tree is perfect
- *@tree: root node of the tree
- *Return: is perfect or not
+ * tree_is_perfect - Function that says if a tree is perfect or not.
+ * @tree: Tree to be checked
+ *
+ * Return: 1 if tree is perfect,
+ *	0 if not.
+ */
+int tree_is_perfect(const binary_tree_t *tree)
+{
+	int l = 0, r = 0;
+
+	if (tree->left && tree->right)
+	{
+		l = 1 + tree_is_perfect(tree->left);
+		r = 1 + tree_is_perfect(tree->right);
+		if (r == l && r != 0 && l != 0)
+			return (r);
+		return (0);
+	}
+	else if (!tree->left && !tree->right)
+	{
+		return (1);
+	}
+	else
+	{
+		return (0);
+	}
+}
+
+/**
+ * binary_tree_is_perfect - Checks binary tree if it is perfect
+ * @tree: Binary tree to check
+ *
+ * Return: 1 if tree is perfect,
+ *	0 if not.
  */
 int binary_tree_is_perfect(const binary_tree_t *tree)
 {
-	size_t left, right;
+	int result = 0;
 
 	if (tree == NULL)
-		return (0);
-
-	left = binary_tree_height(tree->left);
-	right = binary_tree_height(tree->right);
-
-	if (left == right && binary_tree_is_full(tree))
-		return (1);
-	else
-		return (0);
-}
-/**
- *binary_tree_height - measures the height of binary tree
- *@tree: the root of tree
- *Return: size of left or right
- */
-size_t binary_tree_height(const binary_tree_t *tree)
-{
-	size_t left = 0, right = 0;
-
-	if (tree == NULL || (tree->left == NULL && tree->right == NULL))
-		return (0);
-
-	left += binary_tree_height(tree->left);
-	right += binary_tree_height(tree->right);
-	if (left > right)
-		return (left + 1);
-	else
-		return (right + 1);
-}
-/**
- *binary_tree_is_full - checks if a binary tree is full
- *@tree: the root node of the tree
- *Return: 1 or 0
- */
-int binary_tree_is_full(const binary_tree_t *tree)
-{
-	if (tree == NULL)
-		return (0);
-
-	if (tree->left == NULL && tree->right == NULL)
-		return (1);
-	if (tree->left && tree->right)
 	{
-		return (binary_tree_is_full(tree->left) &&
-			binary_tree_is_full(tree->right));
+		return (0);
 	}
-	return (0);
+	else
+	{
+		result = tree_is_perfect(tree);
+		if (result != 0)
+		{
+			return (1);
+		}
+		return (0);
+	}
 }
